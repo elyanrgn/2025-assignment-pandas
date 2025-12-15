@@ -16,7 +16,11 @@ import matplotlib.pyplot as plt
 
 def load_data():
     """Load data from the CSV files referundum/regions/departments."""
-    referendum = pd.read_csv("data/referendum.csv", on_bad_lines="skip", sep=";")
+    referendum = pd.read_csv(
+        "data/referendum.csv",
+        on_bad_lines="skip",
+        sep=";"
+    )
     referendum["Department code"] = (
         referendum["Department code"].astype(str).str.zfill(2)
     )
@@ -75,7 +79,8 @@ def compute_referendum_result_by_regions(referendum_and_areas):
     The return DataFrame should be indexed by `code_reg` and have columns:
     ['name_reg', 'Registered', 'Abstentions', 'Null', 'Choice A', 'Choice B']
     """
-    referendum_result_by_regions = referendum_and_areas.groupby("code_reg").agg(
+    referendum_result_by_regions = referendum_and_areas.groupby(
+        "code_reg").agg(
         {
             "name_reg": "first",
             "Registered": "sum",
@@ -121,7 +126,9 @@ if __name__ == "__main__":
     referendum_and_areas = merge_referendum_and_areas(
         referendum, regions_and_departments
     )
-    referendum_results = compute_referendum_result_by_regions(referendum_and_areas)
+    referendum_results = compute_referendum_result_by_regions(
+        referendum_and_areas
+    )
     print(referendum_results)
 
     plot_referendum_map(referendum_results)
